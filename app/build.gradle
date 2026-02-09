@@ -22,8 +22,8 @@ android {
         applicationId 'com.aaabbbaaa.aaabbbaaa'
         minSdk 36
         targetSdk 36
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
 
         // 仅保留中文和英文资源，防止系统自带的各种语言包塞进来
         resConfigs "zh", "en"
