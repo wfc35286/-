@@ -1,0 +1,65 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android' version '2.1.0'
+}
+
+android {
+    namespace 'com.aaabbbaaa.aaabbbaaa'
+    compileSdk 36
+
+    signingConfigs {
+        release {
+            storeFile file("/data/user/0/com.tom.rv2ide/files/home/my-release-key.jks")
+            storePassword "roxy1234"
+            keyAlias "roxy1234"
+            keyPassword "roxy1234"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    defaultConfig {
+        applicationId 'com.aaabbbaaa.aaabbbaaa'
+        minSdk 36
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+
+        // 仅保留中文和英文资源，防止系统自带的各种语言包塞进来
+        resConfigs "zh", "en"
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true 
+            shrinkResources true // 关键：自动剔除未使用的资源（需要配合 minifyEnabled）
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.release
+        }
+    }
+
+    // --- 洛琪希的暴力剔除魔法 ---
+    packaging {
+        resources {
+            excludes += 'debug/*'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+}
+
+dependencies {
+    compileOnly files('libs/api-82.jar')
+    // 尽量只保留这个，如果你连 ktx 都用不到（纯 Java 逻辑），甚至可以把它也删了
+    implementation 'androidx.core:core-ktx:1.12.0'
+}
